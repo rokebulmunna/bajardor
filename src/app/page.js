@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import PriceIncreased from "@/components/PriceIncreased";
 import PriceDecreased from "@/components/PriceDecreased";
+import AllProducts from "@/components/AllProducts";
 
 export default function Home() {
   return (
@@ -9,8 +10,8 @@ export default function Home() {
       <PriceIncreased />
       <PriceDecreased />
       
-      {/* Target anchor for future full products list */}
-      <div id="products-section" className="max-w-7xl mx-auto py-4">
+      <div id="products-section">
+        <AllProducts />
       </div>
     </main>
   );

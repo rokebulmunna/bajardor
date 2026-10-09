@@ -61,7 +61,7 @@ export default function PriceIncreased() {
     );
   }
 
-  if (products.length === 0) return null;
+  // if (products.length === 0) return null;
 
   return (
     <section className="max-w-7xl mx-auto my-10 px-4">

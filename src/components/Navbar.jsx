@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -26,6 +26,20 @@ export default function Navbar() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -77,6 +91,7 @@ export default function Navbar() {
   }, []);
 
   const handleSignOut = async () => {
+    setIsMenuOpen(false);
     await signOut();
     toast.success("সফলভাবে সাইন আউট হয়েছে");
   };
@@ -100,10 +115,10 @@ export default function Navbar() {
         </Link>
 
         {session ? (
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               type="button"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
               className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition focus:outline-none"
             >
               <img
@@ -117,7 +132,7 @@ export default function Navbar() {
                 className="w-10 h-10 rounded-xl object-cover border border-gray-200"
               />
               <span className="font-medium text-gray-800 text-sm">{session.user?.name || "User"}</span>
-              <span className="text-xs text-gray-500">▼</span>
+              <span className="text-xs text-gray-500">{isMenuOpen ? "▲" : "▼"}</span>
             </button>
 
             {isMenuOpen && (
@@ -130,10 +145,8 @@ export default function Navbar() {
                   মাই প্রোফাইল
                 </Link>
                 <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    handleSignOut();
-                  }}
+                  type="button"
+                  onClick={handleSignOut}
                   className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg font-medium transition cursor-pointer"
                 >
                   সাইন আউট

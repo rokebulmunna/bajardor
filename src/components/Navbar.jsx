@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import toast from "react-hot-toast";
@@ -93,8 +94,14 @@ export default function Navbar() {
       {/* Top Navbar Row */}
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-[#009645] rounded-2xl flex items-center justify-center text-white text-xl shadow-sm">
-            🛒
+          <div className="w-12 h-12 relative flex items-center justify-center">
+            <Image
+              src="/logo-icon.png"
+              alt="BazarDor Logo"
+              width={48}
+              height={48}
+              className="object-contain"
+            />
           </div>
           <div>
             <h1 className="text-xl font-bold text-gray-900 tracking-tight leading-none">

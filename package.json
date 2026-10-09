@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@better-auth/mongo-adapter": "^1.7.7",
+    "@tailwindcss/postcss": "^4.3.3",
     "better-auth": "^1.7.7",
     "lucide-react": "^1.53.0",
     "mongodb": "^7.7.0",

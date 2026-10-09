@@ -7,24 +7,37 @@ export default function PriceIncreased() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchIncreasedProducts() {
       try {
-        const res = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
-        const data = await res.json();
+        const res = await fetch(
+          "https://api.abcz.workers.dev/api/bazardor/products"
+        ).catch(() => null);
 
-        if (Array.isArray(data)) {
-          // Filter products where price increased (change.dir === 'up')
-          const increased = data.filter((item) => item.change?.dir === "up");
-          setProducts(increased);
+        if (res && res.ok) {
+          const data = await res.json();
+
+          if (isMounted && Array.isArray(data)) {
+            // Filter products where price increased (change.dir === 'up')
+            const increased = data.filter((item) => item.change?.dir === "up");
+            setProducts(increased);
+          }
         }
       } catch (err) {
         console.error("Error fetching price increased products:", err);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
 
     fetchIncreasedProducts();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const toBanglaDigits = (num) => {
@@ -38,7 +51,10 @@ export default function PriceIncreased() {
         <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-6"></div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="h-36 bg-gray-100 animate-pulse rounded-2xl"></div>
+            <div
+              key={n}
+              className="h-36 bg-gray-100 animate-pulse rounded-2xl"
+            ></div>
           ))}
         </div>
       </section>
@@ -81,7 +97,14 @@ export default function PriceIncreased() {
                     {name}
                   </h3>
                   <p className="text-xs text-gray-500 font-medium mt-0.5">
-                    প্রতি {unit === "kg" ? "কেজি" : unit === "litre" ? "লিটার" : unit === "dozen" ? "ডজন" : unit}
+                    প্রতি{" "}
+                    {unit === "kg"
+                      ? "কেজি"
+                      : unit === "litre"
+                      ? "লিটার"
+                      : unit === "dozen"
+                      ? "ডজন"
+                      : unit}
                   </p>
                 </div>
               </div>
@@ -94,7 +117,9 @@ export default function PriceIncreased() {
                   </p>
                   <p className="text-xl font-extrabold text-gray-900 leading-none">
                     {toBanglaDigits(price)}{" "}
-                    <span className="text-sm font-semibold text-gray-700">টাকা</span>
+                    <span className="text-sm font-semibold text-gray-700">
+                      টাকা
+                    </span>
                   </p>
                 </div>
 

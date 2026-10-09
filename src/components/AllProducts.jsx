@@ -7,22 +7,35 @@ export default function AllProducts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchAllProducts() {
       try {
-        const res = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
-        const data = await res.json();
+        const res = await fetch(
+          "https://api.abcz.workers.dev/api/bazardor/products"
+        ).catch(() => null);
 
-        if (Array.isArray(data)) {
-          setProducts(data);
+        if (res && res.ok) {
+          const data = await res.json();
+
+          if (isMounted && Array.isArray(data)) {
+            setProducts(data);
+          }
         }
       } catch (err) {
         console.error("Error fetching all products:", err);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
 
     fetchAllProducts();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const toBanglaDigits = (num) => {
@@ -37,7 +50,10 @@ export default function AllProducts() {
         <div className="h-4 w-36 bg-gray-100 animate-pulse rounded mb-6"></div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="h-36 bg-gray-100 animate-pulse rounded-2xl"></div>
+            <div
+              key={n}
+              className="h-36 bg-gray-100 animate-pulse rounded-2xl"
+            ></div>
           ))}
         </div>
       </section>
@@ -84,7 +100,14 @@ export default function AllProducts() {
                     {name}
                   </h3>
                   <p className="text-xs text-gray-500 font-medium mt-0.5">
-                    প্রতি {unit === "kg" ? "কেজি" : unit === "litre" ? "লিটার" : unit === "dozen" ? "ডজন" : unit}
+                    প্রতি{" "}
+                    {unit === "kg"
+                      ? "কেজি"
+                      : unit === "litre"
+                      ? "লিটার"
+                      : unit === "dozen"
+                      ? "ডজন"
+                      : unit}
                   </p>
                 </div>
               </div>
@@ -97,7 +120,9 @@ export default function AllProducts() {
                   </p>
                   <p className="text-xl font-extrabold text-gray-900 leading-none">
                     {toBanglaDigits(price)}{" "}
-                    <span className="text-sm font-semibold text-gray-700">টাকা</span>
+                    <span className="text-sm font-semibold text-gray-700">
+                      টাকা
+                    </span>
                   </p>
                 </div>
 

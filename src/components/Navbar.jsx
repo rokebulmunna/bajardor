@@ -28,7 +28,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  // ড্রেপডাউনের বাইরে ক্লিক করলে তা নিজে থেকেই বন্ধ হয়ে যাবে
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -136,20 +136,35 @@ export default function Navbar() {
             </button>
 
             {isMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 z-50">
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 z-50 space-y-2">
+                {/* ১. নাম ও ইমেইল হেডার */}
+                <div className="px-3 py-2 border-b border-gray-100">
+                  <p className="text-sm font-bold text-gray-900 truncate">
+                    {session.user?.name || "ইউজার"}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate mt-0.5">
+                    {session.user?.email || "user@example.com"}
+                  </p>
+                </div>
+
+                {/* ২. আমার প্রোফাইল লিংক */}
                 <Link
                   href="/profile"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium transition"
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-xl font-medium transition"
                 >
-                  মাই প্রোফাইল
+                  <span>👤</span>
+                  <span>আমার প্রোফাইল</span>
                 </Link>
+
+                {/* ৩. সাইন আউট বাটন */}
                 <button
                   type="button"
                   onClick={handleSignOut}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg font-medium transition cursor-pointer"
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl font-semibold transition cursor-pointer"
                 >
-                  সাইন আউট
+                  <span>↵</span>
+                  <span>সাইন আউট</span>
                 </button>
               </div>
             )}

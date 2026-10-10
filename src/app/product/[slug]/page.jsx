@@ -35,7 +35,7 @@ export default function ProductDetailsPage({ params: paramsPromise }) {
       setError(false);
       try {
         // ১. চেষ্টা করবে আইডি দিয়ে সিঙ্গল প্রোডাক্টের API কল করার
-        let res = await fetch(`https://api.abcz.workers.dev/api/bazardor/products/${slug}`);
+        let res = await fetch(`https://openapi.programming-hero.com/api/bazardor/products/${slug}`);
         
         if (res.ok) {
           const data = await res.json();
@@ -46,7 +46,7 @@ export default function ProductDetailsPage({ params: paramsPromise }) {
         }
 
         // ২. যদি ID দিয়ে ম্যাচ না করে, সব প্রোডাক্ট এনে ফিল্টার করা
-        res = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
+        res = await fetch("https://openapi.programming-hero.com/api/bazardor/products");
         if (res.ok) {
           const allProducts = await res.json();
           if (Array.isArray(allProducts)) {

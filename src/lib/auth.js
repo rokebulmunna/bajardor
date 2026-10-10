@@ -6,9 +6,9 @@ const client = new MongoClient(process.env.BETTER_AUTH_MONGODB_URI);
 const db = client.db("bajardor");
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL: process.env.BETTER_AUTH_URL || "https://bajardor-kappa.vercel.app",
   trustedOrigins: [
-    process.env.BETTER_AUTH_URL,
+    "https://bajardor-kappa.vercel.app",
     "https://bajardor-3qvim7w9b-alpha-381c.vercel.app",
     "https://bajardor-git-main-alpha-381c.vercel.app",
     "http://localhost:3000",

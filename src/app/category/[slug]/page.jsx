@@ -68,7 +68,7 @@ export default function CategoryPage({ params: paramsPromise }) {
     async function fetchProducts() {
       setLoading(true);
       try {
-        const res = await fetch(`https://api.abcz.workers.dev/api/bazardor/products?category=${cleanSlug}`);
+        const res = await fetch(`https://openapi.programming-hero.com/api/bazardor/products?category=${cleanSlug}`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {

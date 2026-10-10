@@ -12,7 +12,7 @@ export default function AllProducts() {
     async function fetchAllProducts() {
       try {
         const res = await fetch(
-          "https://api.abcz.workers.dev/api/bazardor/products"
+          "https://openapi.programming-hero.com/api/bazardor/products"
         ).catch(() => null);
 
         if (res && res.ok) {

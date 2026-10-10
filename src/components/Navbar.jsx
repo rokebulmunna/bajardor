@@ -46,7 +46,7 @@ export default function Navbar() {
 
     async function fetchData() {
       try {
-        const catRes = await fetch("https://api.abcz.workers.dev/api/bazardor/categories").catch(() => null);
+        const catRes = await fetch("https://openapi.programming-hero.com/api/bazardor").catch(() => null);
         if (catRes && catRes.ok) {
           const catData = await catRes.json();
           if (isMounted && Array.isArray(catData) && catData.length > 0) {
@@ -63,7 +63,7 @@ export default function Navbar() {
           ]);
         }
 
-        const prodRes = await fetch("https://api.abcz.workers.dev/api/bazardor/products").catch(() => null);
+        const prodRes = await fetch("https://openapi.programming-hero.com/api/bazardor").catch(() => null);
         if (prodRes && prodRes.ok) {
           const prodData = await prodRes.json();
           if (isMounted && Array.isArray(prodData) && prodData.length > 0) {

@@ -59,9 +59,10 @@ export default function CategoryPage({ params: paramsPromise }) {
   };
 
   const toBanglaDigits = (num) => {
-    if (num === null || num === undefined) return "০";
-    return num.toString().replace(/\d/g, (d) => "০১২৩৪পাঁচছয়সাতআটনয়"[d] || "০১২৩৪৫৬৭৮৯"[d]);
-  };
+  if (num === null || num === undefined) return "০";
+  const banglaNumerals = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+  return num.toString().replace(/\d/g, (digit) => banglaNumerals[digit]);
+};
 
   useEffect(() => {
     async function fetchProducts() {

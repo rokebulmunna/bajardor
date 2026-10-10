@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# বাজার দর (BazarDor) - Commodity Price Tracking Platform
 
-## Getting Started
+**BazarDor (বাজার দর)** is a modern, responsive, and API-driven web application designed to track and monitor daily commodity market prices across Bangladesh. Built with Next.js and Tailwind CSS, it provides real-time market insights, category-wise product breakdown, and market price summaries to help users stay informed about current daily necessity rates.
 
-First, run the development server:
+## 🛠️ Technologies Used
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: Next.js (App Router, React 19)
+- **Styling**: Tailwind CSS
+- **Authentication**: Better Auth (`useSession` client protection & OAuth support)
+- **Icons & UI**: Lucide React / Emoji Utilities
+- **Deployment**: Vercel
+- **API Source**: RESTful API endpoints for live market pricing
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ 5 Key Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. **🔒 Protected Product Details & Dynamic Routes**:
+   - Secure access to detailed market analysis pages requiring authentication (redirects to `/signin` for unauthenticated visitors).
+   - Displays real-time maximum, minimum, and average price summaries alongside market-wise price breakdown tables.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **📊 Category-wise Product Filtering & Sorting**:
+   - Seamless dynamic routing (`/category/[slug]`) for distinct commodity groups (Rice, Vegetables, Fish, Spices, Meat, Oil, etc.).
+   - Interactive sorting controls enabling price organization by *Default*, *Low to High*, and *High to Low*.
 
-## Learn More
+3. **⚡ Robust Fallback & Loading States**:
+   - Skeleton loading states while fetching API data.
+   - Clean empty states with a direct 404-style message and interactive CTA button ("হোম পেজে ফিরে যান") when categories or products are not found.
 
-To learn more about Next.js, take a look at the following resources:
+4. **🚀 Responsive Figma-Aligned UI/UX**:
+   - Modern, mobile-first responsive layout matching Figma design guidelines.
+   - Dynamic Bengali numeral formatting (`toBanglaDigits`) for localized representation of currency and figures.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **🔐 Seamless User Authentication & Sessions**:
+   - Built-in session management with Better Auth including Google/GitHub OAuth login support.
+   - Interactive navigation user menu with click-outside-to-close interaction and user profile display.

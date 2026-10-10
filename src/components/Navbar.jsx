@@ -28,7 +28,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // ড্রেপডাউনের বাইরে ক্লিক করলে তা নিজে থেকেই বন্ধ হয়ে যাবে
+  // ড্রপডাউনের বাইরে ক্লিক করলে বন্ধ হওয়ার লজিক
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -46,11 +46,13 @@ export default function Navbar() {
 
     async function fetchData() {
       try {
-        const catRes = await fetch("https://openapi.programming-hero.com/api/bazardor").catch(() => null);
+        // ১. ক্যাটাগরি ফেচ করা (নতুন এন্ডপয়েন্ট: /categories)
+        const catRes = await fetch("https://openapi.programming-hero.com/api/bazardor/categories").catch(() => null);
         if (catRes && catRes.ok) {
           const catData = await catRes.json();
-          if (isMounted && Array.isArray(catData) && catData.length > 0) {
-            setCategories(catData);
+          const categoryList = Array.isArray(catData) ? catData : catData.data || [];
+          if (isMounted && categoryList.length > 0) {
+            setCategories(categoryList);
           }
         } else if (isMounted) {
           setCategories([
@@ -63,11 +65,13 @@ export default function Navbar() {
           ]);
         }
 
-        const prodRes = await fetch("https://openapi.programming-hero.com/api/bazardor").catch(() => null);
+        // ২. প্রোডাক্টস ফেচ করা (নতুন এন্ডপয়েন্ট: /products)
+        const prodRes = await fetch("https://openapi.programming-hero.com/api/bazardor/products").catch(() => null);
         if (prodRes && prodRes.ok) {
           const prodData = await prodRes.json();
-          if (isMounted && Array.isArray(prodData) && prodData.length > 0) {
-            setProducts(prodData);
+          const productList = Array.isArray(prodData) ? prodData : prodData.data || [];
+          if (isMounted && productList.length > 0) {
+            setProducts(productList);
           }
         } else if (isMounted) {
           setProducts([
@@ -183,35 +187,46 @@ export default function Navbar() {
 
       <div className="border-t border-gray-100" />
 
+      {/* ক্যাটাগরি মেনু বার */}
       <div className="max-w-7xl mx-auto px-6 py-3 overflow-x-auto no-scrollbar">
         <div className="flex items-center justify-center gap-6 min-w-max">
-          {categories.map((cat) => (
-            <Link
-              key={cat.id || cat.slug}
-              href={`/category/${cat.slug || cat.id}`}
-              className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                pathname === `/category/${cat.slug || cat.id}` ? "text-[#009645] font-bold" : "text-gray-700 hover:text-[#009645]"
-              }`}
-            >
-              <span>{cat.icon}</span>
-              <span>{cat.nameBn}</span>
-            </Link>
-          ))}
+          {categories.map((cat, idx) => {
+            const slugVal = cat.slug || cat.id || cat.name || idx;
+            return (
+              <Link
+                key={cat.id || idx}
+                href={`/category/${slugVal}`}
+                className={`flex items-center gap-2 text-sm font-medium transition-colors ${
+                  pathname === `/category/${slugVal}` ? "text-[#009645] font-bold" : "text-gray-700 hover:text-[#009645]"
+                }`}
+              >
+                <span>{cat.icon || "📦"}</span>
+                <span>{cat.nameBn || cat.name}</span>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
+      {/* মার্কি সেকশন (লাইভ তথ্য) */}
       <div className="bg-[#f0f7f3] border-t border-gray-200 py-2 overflow-hidden whitespace-nowrap text-xs">
         <div className="inline-flex animate-marquee space-x-6">
-          {[...products, ...products].map((item, index) => (
-            <div key={index} className="inline-flex items-center gap-2 px-4 border-r border-gray-200 shrink-0">
-              <span>{item.categoryIcon || "🍚"}</span>
-              <span className="font-semibold text-gray-800">{item.nameBn}</span>
-              <span className="text-gray-600">{toBanglaDigits(item.today)} টাকা/{item.unit}</span>
-              <span className={`font-bold flex items-center gap-0.5 ${item.change?.dir === "up" ? "text-red-500" : "text-green-600"}`}>
-                {item.change?.dir === "up" ? "▲" : "▼"} {toBanglaDigits(item.change?.pct || 0)}%
-              </span>
-            </div>
-          ))}
+          {[...products, ...products].map((item, index) => {
+            const isUp = item.change?.dir === "up" || item.changeDir === "up";
+            const changePct = item.change?.pct || item.changePct || 0;
+            const price = item.today || item.todayPrice || 0;
+
+            return (
+              <div key={index} className="inline-flex items-center gap-2 px-4 border-r border-gray-200 shrink-0">
+                <span>{item.categoryIcon || item.icon || "🍚"}</span>
+                <span className="font-semibold text-gray-800">{item.nameBn || item.name}</span>
+                <span className="text-gray-600">{toBanglaDigits(price)} টাকা/{item.unit || "কেজি"}</span>
+                <span className={`font-bold flex items-center gap-0.5 ${isUp ? "text-red-500" : "text-green-600"}`}>
+                  {isUp ? "▲" : "▼"} {toBanglaDigits(changePct)}%
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </header>

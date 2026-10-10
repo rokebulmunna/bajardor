@@ -54,7 +54,7 @@ export default function SignInPage() {
     try {
       await signIn.social({
         provider,
-        callbackURL: "/",
+        callbackURL: "https://bajardor-3qvim7w9b-alpha-381c.vercel.app",
       });
     } catch (err) {
       console.error(err);

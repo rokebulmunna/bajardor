@@ -8,7 +8,9 @@ const db = client.db("bajardor");
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: [
+    process.env.BETTER_AUTH_URL,
     "https://bajardor-3qvim7w9b-alpha-381c.vercel.app",
+    "https://bajardor-git-main-alpha-381c.vercel.app",
     "http://localhost:3000",
   ],
   database: mongodbAdapter(db, {

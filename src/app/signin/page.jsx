@@ -187,4 +187,10 @@ export default function SignInPage() {
       {/* Back to Home link */}
       <Link
         href="/"
-        className="mt-6
+        className="mt-6 text-xs font-medium text-gray-500 hover:text-gray-800 transition"
+      >
+        ← হোম পেজে ফিরে যান
+      </Link>
+    </div>
+  );
+}
